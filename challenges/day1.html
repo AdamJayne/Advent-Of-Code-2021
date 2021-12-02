@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day 1 Solution</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../public/prism.css">
+    <style>
+      body {
+        background-color: rgba(107, 114, 128, 1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="max-w-4xl mx-auto bg-gray-600">
+      <div
+        class="h-16 p-4 bg-yellow-400 flex items-center justify-between"
+      >
+        <h1 class="text-2xl font-bold text-gray-700">Sonar Sweep</h1>
+      </div>
+      <div class="px-4 py-6">
+        <a
+          href="../index.html"
+          class="
+            px-4
+            py-2
+            rounded
+            bg-yellow-400
+            text-gray-700
+            font-bold
+            hover:bg-yellow-500
+            transition
+            mt-6
+          "
+          >Go Back</a
+        >
+        <h1 class="text-3xl font-bold text-white mt-6">Part 1 Solution</h1>
+        <p class="text-white font-normal mt-6">
+          &emsp;&emsp;The first day's challenge starts out fairly easy. You are on
+          a submarine that is pinging the depth of the water ahead, collecting
+          each measurement in an ordered list. To solve the puzzle, you will have
+          to step through an ordered list and compare each value to the previous,
+          keeping track of how many times the value increases.
+        </p>
+        <h1 class="text-xl text-medium text-white my-6">Recursive Solution</h1>
+<pre class="rounded"><code class="language-javascript">let puzzle = await retrievePuzzle();
+puzzle = puzzle.split("\n").map(value =&gt; parseInt(value));
+const countDepthIncreases = (measurements, count = 0, current = 1) =&gt; {
+  if (current == measurements.length) {
+    return count;
+  }
+  return countDepthIncreases(
+    measurements,
+    measurements[current] &gt; measurements[current - 1]
+      ? count + 1
+      : count,
+    current + 1
+  );
+};
+console.log(countDepthIncreases(puzzle));</code></pre>
+        <h1 class="text-xl text-medium text-white my-6">Loop Solution</h1>
+<pre class="rounded"><code class="language-javascript">let puzzle = await retrievePuzzle();
+puzzle = puzzle.split("\n").map(value =&gt; parseInt(value));
+let count = 0;
+for (let i = 1; i &lt; puzzle.length; i++) {
+  if (puzzle[i] &gt; puzzle[i - 1]) count++;
+}
+console.log(count);</code></pre>
+        <button id="solve" class="w-60 p-4 mt-6 bg-green-500 text-white rounded focus:ring focus:ring-green-600">
+          View Part 1 Answer
+        </button>
+      </div>
+    </div>
+    <script src="../public/jsPrism.js"></script>
+    <script>
+      const solveButton = document.getElementById("solve");
+
+      const retrievePuzzle = async () => {
+        const response = await fetch("/puzzles/day1.txt");
+        const puzzle = await response.text();
+        return puzzle;
+      };
+
+      const solvePart1 = async () => {
+        let puzzle = await retrievePuzzle();
+        puzzle = puzzle.split("\n").map(value => parseInt(value));
+        const countDepthIncreases = (measurements, count = 0, current = 1) => {
+          if (current == measurements.length) {
+            return count;
+          }
+          return countDepthIncreases(
+            measurements,
+            measurements[current] > measurements[current - 1]
+              ? count + 1
+              : count,
+            current + 1
+          );
+        };
+        solveButton.innerText = countDepthIncreases(puzzle)
+      };
+
+      solveButton.addEventListener("click", solvePart1);
+    </script>
+  </body>
+</html>

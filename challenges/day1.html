@@ -81,7 +81,7 @@ console.log(count);</code></pre>
       const solveButton = document.getElementById("solve");
 
       const retrievePuzzle = async () => {
-        const response = await fetch("/puzzles/day1.txt");
+        const response = await fetch("../puzzles/day1.txt");
         const puzzle = await response.text();
         return puzzle;
       };
